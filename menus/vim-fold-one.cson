@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Vim Fold One: move up'
+      'command': 'vim-fold-one:move-up'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Vim Fold One'
+      'submenu': [
+        {
+          'label': 'Move Up'
+          'command': 'vim-fold-one:move-up'
+        }
+      ]
+    ]
+  }
+]
