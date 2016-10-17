@@ -1,12 +1,10 @@
 {
   "name": "vim-fold-one",
   "main": "./lib/vim-fold-one",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A short description of your package",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {
-    "atom-workspace": "vim-fold-one:move-up",
     "atom-workspace": "vim-fold-one:move-down"
   },
   "repository": "https://github.com/xh3b4sd/vim-fold-one",
@@ -14,6 +12,5 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
