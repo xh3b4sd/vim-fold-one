@@ -9,7 +9,7 @@
     "atom-workspace": "vim-fold-one:move-up",
     "atom-workspace": "vim-fold-one:move-down"
   },
-  "repository": "https://github.com/atom/vim-fold-one",
+  "repository": "https://github.com/xh3b4sd/vim-fold-one",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
