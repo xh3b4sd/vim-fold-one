@@ -36,7 +36,7 @@ module.exports = VimFoldOne =
 
       lastIndentation = indentation
 
-    @editor.setCursorScreenPosition(new Point(row, 0))
+    @editor.setCursorBufferPosition(new Point(row, 0))
 
   moveDown: ->
     @editor = atom.workspace.getActiveTextEditor()
@@ -45,19 +45,28 @@ module.exports = VimFoldOne =
 
     lastIndentation = null
     row = @currentRow
+    isFirstRowFolded = @editor.isFoldedAtBufferRow(row)
+    isNotFoldedAnymore = false
 
     loop
       # The row below us might be the last one of the file. In case we reached
       # the end of the file, stop here.
       row++
-      return if row >= @editor.getLineCount()
+      return if row >= @editor.getLastBufferRow()
+
+      isCurrentRowFolded = @editor.isFoldedAtBufferRow(row)
+
+      break if isCurrentRowFolded and isNotFoldedAnymore
+      continue if isCurrentRowFolded and isFirstRowFolded
+      isNotFoldedAnymore = true
+      break if isCurrentRowFolded and isNotFoldedAnymore
 
       indentation = @getIndent row
       break if indentation is 0 and lastIndentation? and lastIndentation <= 0
 
       lastIndentation = indentation
 
-    @editor.setCursorScreenPosition(new Point(row, 0))
+    @editor.setCursorBufferPosition(new Point(row, 0))
 
   getIndent: (row) ->
     lineText = @editor.lineTextForBufferRow(row)
