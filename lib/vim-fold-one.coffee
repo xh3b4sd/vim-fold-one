@@ -13,9 +13,67 @@ module.exports = VimFoldOne =
 
     @subscriptions.add atom.commands.add 'atom-text-editor', 'vim-fold-one:move-up', => @moveUp()
     @subscriptions.add atom.commands.add 'atom-text-editor', 'vim-fold-one:move-down', => @moveDown()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'vim-fold-one:toggle-current-fold', => @toggleCurrentFold()
+    @subscriptions.add atom.commands.add 'atom-text-editor', 'vim-fold-one:toggle-all-folds', => @toggleAllFolds()
 
   deactivate: ->
     @subscriptions.dispose()
+
+  toggleCurrentFold: ->
+    @editor = atom.workspace.getActiveTextEditor()
+    @currentRow = @editor.bufferPositionForScreenPosition(@editor.getCursorScreenPosition()).row
+    return if not @editor
+
+    foldableRows = []
+
+    currentIndentation = @getIndent(@currentRow)
+    nextIndentation = @getIndent(@currentRow+1)
+    if currentIndentation == 0 and nextIndentation > currentIndentation
+      foldableRows = @foldableRowsFromStart(@currentRow)
+    else
+      foldableRows = @foldableRowsFromBody(@currentRow)
+
+    isFolded = @editor.isFoldedAtBufferRow(@currentRow)
+    for row in foldableRows
+      if isFolded
+        @editor.unfoldBufferRow(row)
+      else
+        @editor.foldBufferRow(row)
+
+  toggleAllFolds: ->
+    @editor = atom.workspace.getActiveTextEditor()
+    @currentRow = @editor.bufferPositionForScreenPosition(@editor.getCursorScreenPosition()).row
+    return if not @editor
+
+    if @editor.isFoldedAtBufferRow(@currentRow)
+      @editor.unfoldAll()
+    else
+      @editor.foldAll()
+
+  foldableRowsFromBody: (row) ->
+    return @foldableRowsFromBodyUpwards(row).concat(@foldableRowsFromBodyDownwards(row++))
+
+  foldableRowsFromBodyUpwards: (row) ->
+    foldableRows = [row]
+    loop
+      row--
+      return foldableRows if @getIndent(row) is 0
+      foldableRows.push(row)
+
+  foldableRowsFromBodyDownwards: (row) ->
+    foldableRows = [row]
+    loop
+      row++
+      return foldableRows if @getIndent(row) is 0
+      foldableRows.push(row)
+
+  foldableRowsFromStart: (row) ->
+    foldableRows = [row]
+    startIndentation = @getIndent(row)
+    loop
+      row++
+      return foldableRows if @getIndent(row) is startIndentation
+      foldableRows.push(row)
 
   moveUp: ->
     @editor = atom.workspace.getActiveTextEditor()
@@ -45,24 +103,15 @@ module.exports = VimFoldOne =
 
     lastIndentation = null
     row = @currentRow
-    isFirstRowFolded = @editor.isFoldedAtBufferRow(row)
-    isNotFoldedAnymore = false
 
     loop
       # The row below us might be the last one of the file. In case we reached
       # the end of the file, stop here.
       row++
-      return if row >= @editor.getLastBufferRow()
-
-      isCurrentRowFolded = @editor.isFoldedAtBufferRow(row)
-
-      break if isCurrentRowFolded and isNotFoldedAnymore
-      continue if isCurrentRowFolded and isFirstRowFolded
-      isNotFoldedAnymore = true
-      break if isCurrentRowFolded and isNotFoldedAnymore
+      return if row >= @editor.getLineCount()
 
       indentation = @getIndent row
-      break if indentation is 0 and lastIndentation? and lastIndentation <= 0
+      break if indentation is 0 and lastIndentation? and lastIndentation <= 0 and @getIndent(row+1) > indentation
 
       lastIndentation = indentation
 
