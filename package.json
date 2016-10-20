@@ -1,16 +1,24 @@
 {
-  "name": "vim-fold-one",
-  "main": "./lib/vim-fold-one",
-  "version": "0.0.2",
-  "description": "A short description of your package",
-  "keywords": [],
-  "activationCommands": {
-    "atom-workspace": "vim-fold-one:move-down"
+  "bugs": {
+    "url": "https://github.com/xh3b4sd/vim-fold-one/issues"
   },
-  "repository": "https://github.com/xh3b4sd/vim-fold-one",
-  "license": "MIT",
+  "dependencies": {},
+  "description": "A short description of your package",
+  "devDependencies": {},
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {}
+  "homepage": "https://github.com/xh3b4sd/vim-fold-one#readme",
+  "keywords": [],
+  "license": "MIT",
+  "main": "./lib/vim-fold-one",
+  "name": "vim-fold-one",
+  "optionalDependencies": {},
+  "readme": "# vim-fold-one package\n\nA short description of your package.\n\n![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xh3b4sd/vim-fold-one.git"
+  },
+  "version": "0.0.2"
 }
