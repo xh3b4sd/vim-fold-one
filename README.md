@@ -1,5 +1,8 @@
 # vim-fold-one package
 
-A short description of your package.
-
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+This is an [Atom](https://atom.io) package to manage folds of the first
+indentation level in source code files. Movement as being realized by this
+package does not make a lot of sense in every single case. Folding itself needs
+to be done wisely. A little ranty but partially very valid blog post about
+folding can be found here:
+https://blog.codinghorror.com/the-problem-with-code-folding.
